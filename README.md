@@ -1,4 +1,4 @@
-# Sweet Spot is All You Need
+# Self-supervised Representation Learning for Evolutionary Neural Architecture Search
 
 This repository contains code for paper [Self-supervised Representation Learning for Evolutionary Neural Architecture Search]().
 
@@ -45,4 +45,4 @@ cd SSNENAS
 ## Contact
 Chen Wei
 
-email: weichen_3@stu.xidian.edu.cn
+email: weichen_3@stu.xidian.edu.cn, weichen@xupt.edu.cn
