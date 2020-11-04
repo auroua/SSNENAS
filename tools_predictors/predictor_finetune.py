@@ -1,4 +1,7 @@
 import argparse
+import os
+import sys
+sys.path.append(os.getcwd())
 from nas_lib.data import data
 from nas_lib.trainer.trainer_retrain import NASBenchReTrain
 from nas_lib.utils.comm import set_random_seed

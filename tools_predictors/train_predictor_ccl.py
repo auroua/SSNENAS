@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.append(os.getcwd())
 from nas_lib.ccl.ccl_nas import main
 import argparse
 import numpy as np

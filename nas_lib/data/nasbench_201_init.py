@@ -10,7 +10,7 @@ from nas_lib.data.nasbench_201_cell import Cell
 import numpy as np
 from nas_lib.utils.utils_data import find_isolate_node
 import pickle
-from configs import nas_bench_201_converted_path
+from configs import nas_bench_201_base_path
 import argparse
 import copy
 
@@ -159,14 +159,14 @@ def inti_nasbench_201(args):
     nas_bench = API(nas_bench_201_path)
     total_archs, total_keys = generate_all_archs(nas_bench, args)
     file_name = args.dataname.replace('-', '_')
-    save_path = os.path.join(nas_bench_201_converted_path, 'arch_info_'+file_name+'.pkl')
+    save_path = os.path.join(nas_bench_201_base_path, 'arch_info_'+file_name+'.pkl')
     with open(save_path, 'wb') as f:
         pickle.dump(total_archs, f)
         pickle.dump(total_keys, f)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Args for algorithms compare.')
+    parser = argparse.ArgumentParser(description='Args for nasbench_201 init.')
     parser.add_argument('--dataname', type=str, default='cifar10-valid',
                         choices=['cifar10-valid', 'cifar10', 'cifar100', 'ImageNet16-120'],
                         help='Number of trials')

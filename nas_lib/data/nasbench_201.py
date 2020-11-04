@@ -6,7 +6,7 @@ import numpy as np
 from nas_lib.data.nasbench_201_cell import Cell
 import torch
 import pickle
-from configs import nas_bench_201_converted_path
+from configs import nas_bench_201_base_path
 
 NUM_VERTICES = 8
 OPS = ['input', 'none', 'skip_connect', 'nor_conv_1x1', 'nor_conv_3x3', 'avg_pool_3x3', 'isolate', 'output']
@@ -21,10 +21,10 @@ class NASBench201:
         self.op_names_alphaX = ['none', 'skip_connect', 'nor_conv_1x1', 'nor_conv_3x3', 'avg_pool_3x3', 'term']
         del self.nas_bench
         if args is None:
-            arch_file_path = os.path.join(nas_bench_201_converted_path, 'arch_info_cifar10_valid.pkl')
+            arch_file_path = os.path.join(nas_bench_201_base_path, 'arch_info_cifar10_valid.pkl')
         else:
             dataset_name = 'arch_info_' + args.dataname.replace('-', '_') + '.pkl'
-            arch_file_path = os.path.join(nas_bench_201_converted_path, dataset_name)
+            arch_file_path = os.path.join(nas_bench_201_base_path, dataset_name)
         print(arch_file_path)
         with open(arch_file_path, 'rb') as f:
             self.total_archs = pickle.load(f)

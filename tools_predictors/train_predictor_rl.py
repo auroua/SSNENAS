@@ -1,7 +1,9 @@
 import argparse
+import os
+import sys
+sys.path.append(os.getcwd())
 from nas_lib.trainer.trainer import NASBenchTrainer
 from nas_lib.data import data
-import os
 import tensorflow as tf
 from nas_lib.utils.comm import set_random_seed, setup_logger
 
@@ -32,7 +34,7 @@ if __name__ == '__main__':
     parser.add_argument('--predictor_list', type=list, default=['SS_RL'],
                         help='The analysis architecture dataset type!')
     parser.add_argument('--seed', type=int, default=333, help='The seed value.')
-    parser.add_argument('--search_space', type=str, default='nasbench_201',
+    parser.add_argument('--search_space', type=str, default='nasbench_101',
                         choices=['nasbench_101', 'nasbench_201'],
                         help='The search space.')
     parser.add_argument('--epochs', type=int, default=300, help='The architecture training epochs.')
