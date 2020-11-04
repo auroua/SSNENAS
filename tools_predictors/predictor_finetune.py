@@ -10,6 +10,7 @@ import os
 import pickle
 from nas_lib.utils.comm import random_id, random_id_int, setup_logger
 from configs import nas_bench_101_all_data
+from configs import ss_rl_nasbench_101, ss_rl_nasbench_201, ss_ccl_nasbench_101, ss_ccl_nasbench_201
 
 
 def predictor_retrain_compare(args, predictor, train_data, test_data, flag, load_dir=None, train_epochs=None,
@@ -81,47 +82,31 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Predictor comparison parameters!')
     # ['supervised', 'SS_RL', 'SS_CCL']
     parser.add_argument('--compare_supervised', type=str, default='T')
-    parser.add_argument('--predictor_list', type=list, default=['SS_RL',
-                                                                'SS_CCL',
-                                                                ],
+    parser.add_argument('--predictor_list', default=['SS_RL',
+                                                     'SS_CCL',
+                                                     ],
+                        nargs='+',
                         help='The analysis architecture dataset type!')
     parser.add_argument('--search_space', type=str, default='nasbench_101',
                         choices=['nasbench_101', 'nasbench_201'],
                         help='The search space.')
     parser.add_argument('--with_g_func', type=bool, default=False,
                         help='Using the g function after the backbone.')
-    parser.add_argument('--trails', type=int, default=100, help='How many trails to carry out.')
+    parser.add_argument('--trails', type=int, default=40, help='How many trails to carry out.')
     parser.add_argument('--seed', type=int, default=random_id_int(4), help='The seed value.')
     parser.add_argument('--dataname', type=str, default='cifar10-valid',
                         choices=['cifar10-valid', 'cifar10', 'cifar100', 'ImageNet16-120'],
                         help='The evaluation of dataset of NASBench-201.')
     parser.add_argument('--search_budget', type=list,
-                        # default=[20, 50, 100, 150, 200],
-                        default=[20, 50],
+                        default=[20, 50, 100, 150, 200],
                         help='How many architectures are selected to train the neural predictor.')
     parser.add_argument('--train_iterations', type=list,
-                        # default=[50, 100, 150, 200, 250, 300],
-                        default=[50],
+                        default=[50, 100, 150, 200, 250, 300],
                         help='How many training iterations are used to train the model.')
     parser.add_argument('--gpu', type=int, default=0, help='Choose which gpu to train the neural network.')
-    parser.add_argument('--load_dir', type=str,
-                        # for nasbench_201
-                        # default=[
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/unsupervised_gin_ged_nasbench_201/unsupervised_ged_epoch_299.pt',
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/moco_v2_nasbench_201/checkpoint_0299.pth.tar'
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/batch_size_compare/ccl_nasbench_101_10000_5000/checkpoint_0299.pth.tar',
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/batch_size_compare/ccl_nasbench_101_40000_20000/checkpoint_0299.pth.tar'
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/moco_v2_nasbench_101_40000_40000/checkpoint_0299.pth.tar'
-                        # ],
+    parser.add_argument('--load_dir',  nargs='+',
                         # for nasbench_101
-                        default=[
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/batch_size_compare/ccl_nasbench_101_10000_5000/checkpoint_0299.pth.tar',
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/batch_size_compare/ccl_nasbench_101_40000_20000/checkpoint_0299.pth.tar',
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/batch_size_compare/ccl_nasbench_101_70000_35000/checkpoint_0299.pth.tar',
-                            # '/home/albert_wei/Disk_A/train_output_ssne_nas/results/batch_size_compare/ccl_nasbench_101_100000_50000/checkpoint_0278.pth.tar',
-                            '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/ss_rl_nasbench_101/unsupervised_ged_epoch_299.pt',
-                            '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/ss_ccl_nasbench_101_140000_1399800_wo_margin/checkpoint_0282.pth.tar'
-                        ],
+                        default=[],
                         help='The pre-trained unsupervised model save path.')
     parser.add_argument('--save_dir', type=str,
                         default='/home/albert_wei/Disk_A/train_output_ssne_nas/test/',
@@ -130,8 +115,12 @@ if __name__ == '__main__':
 
     if args.search_space == 'nasbench_101':
         args.seq_len = 120
+        if not args.load_dir:
+            args.load_dir = [ss_rl_nasbench_101, ss_ccl_nasbench_101]
     elif args.search_space == 'nasbench_201':
         args.seq_len = 96
+        if not args.load_dir:
+            args.load_dir = [ss_rl_nasbench_201, ss_ccl_nasbench_201]
     else:
         raise NotImplementedError('This search space does not support at present!')
 

@@ -34,23 +34,23 @@ def algo_params_close_domain(param_str, search_budget=100, dataname='cifar10'):
         raise NotImplementedError()
 
     if param_str == 'nasbench_101':
-        # params.append({'algo_name': 'random', 'total_queries': search_budget})
-        # params.append({'algo_name': 'evolution', 'total_queries': search_budget, 'population_size': 30, 'num_init': 10, 'k': 10,
-        #                'tournament_size': 10, 'mutation_rate': 1.0})
-        # params.append({'algo_name': 'bananas', 'total_queries': search_budget, 'num_ensemble': 5, 'allow_isomorphisms': False,
-        #                'acq_opt_type': 'mutation', 'candidate_nums': 100, 'num_init': 10, 'k': 10,
-        #                'encode_paths': True})
-        # params.append({'algo_name': 'bananas_f', 'total_queries': search_budget, 'num_ensemble': 5,
-        #                'allow_isomorphisms': False, 'acq_opt_type': 'mutation', 'candidate_nums': 100, 'num_init': 10,
-        #                'k': 10, 'encode_paths': False})
-        # params.append({'algo_name': 'bananas_context', 'total_queries': search_budget, 'num_ensemble': 5,
-        #                'allow_isomorphisms': False, 'acq_opt_type': 'mutation', 'candidate_nums': 100, 'num_init': 10,
-        #                'k': 10, 'encode_paths': False})
-        # params.append({'algo_name': 'gin_predictor', 'total_queries': search_budget, 'agent': 'gin_predictor',
-        #                'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'candidate_nums': 100, 'epochs': 300})
-        # params.append({'algo_name': 'gin_predictor_fixed_nums', 'total_queries': search_budget, 'agent': 'gin_predictor',
-        #                'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'candidate_nums': 100, 'epochs': 300,
-        #                'training_nums': 50})
+        params.append({'algo_name': 'random', 'total_queries': search_budget})
+        params.append({'algo_name': 'evolution', 'total_queries': search_budget, 'population_size': 30, 'num_init': 10, 'k': 10,
+                       'tournament_size': 10, 'mutation_rate': 1.0})
+        params.append({'algo_name': 'bananas', 'total_queries': search_budget, 'num_ensemble': 5, 'allow_isomorphisms': False,
+                       'acq_opt_type': 'mutation', 'candidate_nums': 100, 'num_init': 10, 'k': 10,
+                       'encode_paths': True})
+        params.append({'algo_name': 'bananas_f', 'total_queries': search_budget, 'num_ensemble': 5,
+                       'allow_isomorphisms': False, 'acq_opt_type': 'mutation', 'candidate_nums': 100, 'num_init': 10,
+                       'k': 10, 'encode_paths': False})
+        params.append({'algo_name': 'bananas_context', 'total_queries': search_budget, 'num_ensemble': 5,
+                       'allow_isomorphisms': False, 'acq_opt_type': 'mutation', 'candidate_nums': 100, 'num_init': 10,
+                       'k': 10, 'encode_paths': False})
+        params.append({'algo_name': 'gin_predictor', 'total_queries': search_budget, 'agent': 'gin_predictor',
+                       'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'candidate_nums': 100, 'epochs': 300})
+        params.append({'algo_name': 'gin_predictor_fixed_nums', 'total_queries': search_budget, 'agent': 'gin_predictor',
+                       'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'candidate_nums': 100, 'epochs': 300,
+                       'training_nums': 50})
         params.append({'algo_name': 'gin_predictor_ss_rl', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
                        'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl'})

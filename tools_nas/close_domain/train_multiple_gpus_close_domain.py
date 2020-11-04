@@ -2,6 +2,9 @@
 
 
 import argparse
+import os
+import sys
+sys.path.append(os.getcwd())
 from nas_lib.algos_nas.algo_compare import run_nas_algos_nasbench_101, run_nas_algos_nasbench_201
 from nas_lib.params_nas import meta_neuralnet_params
 from nas_lib.params_nas import algo_params_close_domain as algo_params
@@ -11,11 +14,11 @@ import psutil
 from nas_lib.utils.comm import set_random_seed, random_id, setup_logger
 import torch.multiprocessing as multiprocessing
 from torch.multiprocessing import Process
-import os
 from torch.multiprocessing import Queue
 import pickle
 import numpy as np
 import time
+from configs import ss_rl_nasbench_101, ss_rl_nasbench_201, ss_ccl_nasbench_101, ss_ccl_nasbench_201
 
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -77,12 +80,16 @@ def run_experiments_bananas_paradigm(args, save_dir, i, iterations, logger, sear
                                                                      psutil.virtual_memory().free/(1024*1024)))
         starttime = time.time()
         if args.algo_params == 'nasbench_101' or args.algo_params == 'nasbench_101_fixed':
+            model_dir_dict_101 = {'ss_rl': ss_rl_nasbench_101,
+                                  'ss_ccl': ss_ccl_nasbench_101}
             algo_result = run_nas_algos_nasbench_101(algorithm_params[j], metann_params, search_space, gpu=i,
                                                      logger=logger, with_details=args.with_details,
-                                                     model_dir=args.model_dir_dict_101)
+                                                     model_dir=model_dir_dict_101)
         elif args.algo_params == 'nasbench_201' or args.algo_params == 'nasbench_201_fixed':
+            model_dir_dict_201 = {'ss_rl': ss_rl_nasbench_201,
+                                  'ss_ccl': ss_ccl_nasbench_201}
             algo_result = run_nas_algos_nasbench_201(algorithm_params[j], metann_params, search_space, gpu=i,
-                                                     logger=logger, model_dir=args.model_dir_dict_201)
+                                                     logger=logger, model_dir=model_dir_dict_201)
         else:
             raise NotImplementedError("This algorithm does not support!")
 
@@ -149,20 +156,6 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str,
                         default='/home/albert_wei/Disk_A/train_output_2020/testtest/',
                         help='output directory')
-    parser.add_argument('--model_dir_dict_101', type=str,
-                        default={
-                            'ss_rl':
-                                '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/ss_rl_nasbench_101/unsupervised_ged_epoch_299.pt',
-                            'ss_ccl':
-                                '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/ss_ccl_nasbench_101_140000_1399800_wo_margin/checkpoint_0282.pth.tar'},
-                        help='The model saved dir.')
-    parser.add_argument('--model_dir_dict_201', type=str,
-                        default={
-                            'ss_rl':
-                                '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/ss_rl_nasbench_201/unsupervised_ged_epoch_299.pt',
-                            'ss_ccl':
-                                '/home/albert_wei/Disk_A/train_output_ssne_nas/results/pre_trained_models/ss_ccl_nasbench_201/checkpoint_0299.pth.tar'},
-                        help='The model saved dir.')
     args = parser.parse_args()
 
     if args.search_space == 'nasbench_101':

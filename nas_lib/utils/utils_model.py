@@ -16,7 +16,7 @@ def load_modify_model(model, model_temp, model_path, verbose=0):
 
 
 def get_temp_model(predictor_type, input_dim):
-    if predictor_type == 'ss_rl':
+    if predictor_type == 'SS_RL' or predictor_type == 'ss_rl':
         predictor = PredictorSiameseGED(input_dim=input_dim)
     else:
         raise NotImplementedError(f'The predictor type {predictor_type} have implement yet!')
