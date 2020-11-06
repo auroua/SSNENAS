@@ -49,7 +49,7 @@ def main(args):
             print(f'budget: {budget}, train data size: {len(train_data)}, test data size: {len(test_data)}')
             for epochs in args.train_iterations:
                 if args.compare_supervised == 'T':
-                    logger.info(f'====  predictor type: {args.predictor_list[0]}, load pretrain model False, '
+                    logger.info(f'====  predictor type: SUPERVISED, load pretrain model False, '
                                 f'search budget is {budget}. Training epoch is {epochs} ====')
                     spearman_corr, kendalltau_corr = predictor_retrain_compare(args, args.predictor_list[0],
                                                                                train_data, test_data,
