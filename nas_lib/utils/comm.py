@@ -276,3 +276,29 @@ class DummyLogger:
 
     def dubeg(self, a):
         pass
+
+
+def remove_nasbench101_isolate(matrix, ops):
+    while True:
+        try:
+            indexs = ops.index('isolate')
+            matrix = np.delete(matrix, indexs, axis=0)
+            matrix = np.delete(matrix, indexs, axis=1)
+            ops.pop(indexs)
+        except ValueError:
+            break
+    return matrix, ops
+
+
+if __name__ == '__main__':
+    matrix = np.array([[0, 1, 0, 1, 1, 1, 0],
+                       [0, 0, 1, 0, 1, 0, 1],
+                       [0, 0, 0, 0, 0, 0, 1],
+                       [0, 0, 0, 0, 1, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 1],
+                       [0, 0, 0, 0, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 0, 0]]
+                      )
+    ops = ['input', 'maxpool3x3', 'conv1x1-bn-relu', 'isolate', 'conv3x3-bn-relu', 'isolate', 'output']
+
+    remove_nasbench101_isolate(matrix, ops)

@@ -21,6 +21,7 @@ import torch.utils.data.distributed
 from gnn_lib.data import Batch
 from nas_lib.data.nasbench_101_torch import NASBenche101Dataset
 from nas_lib.data.nasbench_201_torch import NASBenche201Dataset
+from nas_lib.data.darts_torch import DartsDataset
 from nas_lib.ccl.ccl_model.builder import build_model
 from nas_lib.ccl.ccl_model.ccl_nas_model import CCLNas
 from nas_lib.utils.comm import setup_logger, DummyLogger
@@ -160,6 +161,8 @@ def main_worker(gpu, ngpus_per_node, args, distributed=True):
         train_dataset = NASBenche101Dataset(model_type='SS_CCL')
     elif args.search_space == 'nasbench_201':
         train_dataset = NASBenche201Dataset(model_type='SS_CCL')
+    elif args.search_space == 'darts':
+        train_dataset = DartsDataset(model_type='SS_CCL', arch_path=args.darts_arch_path)
     else:
         raise NotImplementedError('This kind nasbench has not implemented.')
 

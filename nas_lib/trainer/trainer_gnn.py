@@ -14,6 +14,7 @@ from nas_lib.utils.comm import get_spearmanr_coorlection, get_kendalltau_coorlec
 from nas_lib.utils.utils_model import get_temp_model, load_modify_model, \
     load_predictor_ged_moco_v2
 import os
+import time
 
 
 class TrainerGNN:
@@ -30,12 +31,12 @@ class TrainerGNN:
         if load_model and predictor_type == 'SS_RL':
             temp_model = get_temp_model(predictor_type, input_dim)
             self.predictor = load_modify_model(self.predictor, temp_model, model_path)
+            logger.info(f'load model {predictor_type}')
             del temp_model
             self.lr *= 0.1
         elif load_model and 'SS_CCL' in predictor_type:
             self.predictor = load_predictor_ged_moco_v2(self.predictor, model_path)
-            self.lr *= 0.1
-
+            logger.info(f'load model {predictor_type}')
         if 'SS_CCL' in predictor_type:
             self.predictor.fc = torch.nn.Linear(32, 1, bias=True)
             torch.nn.init.kaiming_uniform_(self.predictor.fc.weight, a=1)
@@ -89,6 +90,7 @@ class TrainerGNN:
     def fit_train(self, edge_index, node_feature, accuracy, logger=None):
         meters = MetricLogger(delimiter=" ")
         self.predictor.train()
+        start = time.time()
         for epoch in range(self.epoch):
             idx_list = list(range(len(edge_index)))
             random.shuffle(idx_list)
@@ -146,8 +148,9 @@ class TrainerGNN:
         return torch.cat(pred_list, dim=0)
 
     def fit_g(self, ytrain, g_train_data, ytest, g_test_data):
+        start = time.time()
         self.fit_train_g_data(g_train_data, ytrain)
-
+        duration = time.time() - start
         train_pred = self.pred_g_data(g_train_data).cpu().numpy()
         test_pred = self.pred_g_data(g_test_data).cpu().numpy()
 
@@ -158,12 +161,14 @@ class TrainerGNN:
         test_kendalltau_corr = get_kendalltau_coorlection(test_pred.tolist(), ytest)[0]
 
         if self.logger:
-            self.logger.info(f'Train error: {train_mean_error}, Test error: {test_mean_error}, Spearman Correlation: {test_spearman_corr}, '
+            self.logger.info(f'Training time cost: {duration}, Train error: {train_mean_error}, '
+                             f'Test error: {test_mean_error}, Spearman Correlation: {test_spearman_corr}, '
                              f'Kendalltau Corrlation: {test_kendalltau_corr}')
         else:
-            print(f'Train error: {train_mean_error}, Test error: {test_mean_error}, Spearman Correlation: {test_spearman_corr}, '
+            print(f'Training time cost: {duration}, Train error: {train_mean_error}, Test error: {test_mean_error}, '
+                  f'Spearman Correlation: {test_spearman_corr}, '
                   f'Kendalltau Corrlation: {test_kendalltau_corr}')
-        return test_spearman_corr, test_kendalltau_corr
+        return test_spearman_corr, test_kendalltau_corr, duration
 
     def fit_train_g_data(self, g_data, accuracy, logger=None):
         meters = MetricLogger(delimiter=" ")
@@ -216,7 +221,7 @@ class TrainerGNN:
         return torch.cat(pred_list, dim=0)
 
     def _get_predicotr(self, with_g_func):
-        if self.predictor_type == 'SS_RL':
+        if self.predictor_type == 'SS_RL' or 'SS_RL' in self.predictor_type:
             predictor = PredictorGINRL(input_dim=self.input_dim)
         elif 'SS_CCL' in self.predictor_type:
             predictor = PredictorGINCCL(input_dim=self.input_dim, reTrain=True)

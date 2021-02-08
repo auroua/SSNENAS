@@ -70,9 +70,9 @@ class CCLNas(nn.Module):
             neg_vecs = q[negative_mask][:self.min_negative_size, :]
 
             center = torch.mean(posit_vecs, dim=0, keepdim=True)
-
             center = nn.functional.normalize(center, dim=1)
-
+            if torch.any(torch.isnan(center)):
+                continue
             positive_pairs = torch.mm(posit_vecs, center.view(-1, 1))
 
             negative_pairs = torch.mm(neg_vecs, center.view(-1, 1))
@@ -89,5 +89,5 @@ class CCLNas(nn.Module):
         final_logits = torch.cat(logits_list, dim=0)
         final_center = torch.cat(center_list, dim=0)
         label = torch.zeros(final_logits.shape[0], dtype=torch.long).cuda()
-
+        # print(f'There {counter} nan center vectors.')
         return final_logits, label, final_center

@@ -59,10 +59,10 @@ def algo_params_close_domain(param_str, search_budget=100, dataname='cifar10'):
                        'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 90})
         params.append({'algo_name': 'gin_predictor_ss_ccl', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl'})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl'})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl', 'training_nums': 90})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl', 'training_nums': 90})
     elif param_str == 'nasbench_201':
         params.append({'algo_name': 'random', 'total_queries': search_budget})
         params.append({'algo_name': 'evolution', 'total_queries': search_budget, 'population_size': 30, 'num_init': 10,
@@ -91,10 +91,10 @@ def algo_params_close_domain(param_str, search_budget=100, dataname='cifar10'):
                        'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 50})
         params.append({'algo_name': 'gin_predictor_ss_ccl', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
-                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl'})
+                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_ccl'})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
-                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 50})
+                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_ccl', 'training_nums': 50})
     elif param_str == 'nasbench_101_fixed':
         params.append({'algo_name': 'gin_predictor_ss_rl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
@@ -114,19 +114,19 @@ def algo_params_close_domain(param_str, search_budget=100, dataname='cifar10'):
 
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl', 'training_nums': 20})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl', 'training_nums': 20})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl', 'training_nums': 50})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl', 'training_nums': 50})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl', 'training_nums': 80})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl', 'training_nums': 80})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl', 'training_nums': 110})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl', 'training_nums': 110})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005,
-                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_rl', 'training_nums': 150})
+                       'candidate_nums': 100, 'epochs': 200, 'predictor_type': 'ss_ccl', 'training_nums': 150})
     elif param_str == 'nasbench_201_fixed':
         params.append({'algo_name': 'gin_predictor_ss_rl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
@@ -143,16 +143,16 @@ def algo_params_close_domain(param_str, search_budget=100, dataname='cifar10'):
 
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
-                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 20})
+                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_ccl', 'training_nums': 20})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
-                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 50})
+                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_ccl', 'training_nums': 50})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
-                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 80})
+                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_ccl', 'training_nums': 80})
         params.append({'algo_name': 'gin_predictor_ss_ccl_num_fixed', 'total_queries': search_budget, 'k': 10,
                        'agent': 'gin_predictor', 'num_init': 10, 'allow_isomorphisms': False, 'lr': 0.005, 'rate': rate,
-                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_rl', 'training_nums': 100})
+                       'candidate_nums': 100, 'epochs': 150, 'predictor_type': 'ss_ccl', 'training_nums': 100})
     elif param_str == 'experiment':
         pass
     else:
@@ -164,10 +164,11 @@ def algo_params_close_domain(param_str, search_budget=100, dataname='cifar10'):
 
 
 def algo_params_open_domain(param_str):
-    if param_str == 'gin_predictor':
-        param = {'algo_name': 'gin_predictor', 'total_queries': 100, 'agent': 'gin_predictor', 'num_init': 10,
-                 'allow_isomorphisms': False, 'k': 10, 'epochs': 300, 'batch_size': 32, 'lr': 0.005, 'encode_path': True,
-                 'candidate_nums': 100}
+    if param_str == 'gin_predictor':   # gin_predictor   gin_predictor_fixed_num
+        param = {'algo_name': 'gin_predictor_fixed_num', 'total_queries': 30, 'agent': 'gin_predictor', 'num_init': 10,
+                 'allow_isomorphisms': False, 'k': 10, 'epochs': 300, 'batch_size': 32, 'lr': 0.005,
+                 'encode_path': True, 'candidate_nums': 100, 'mutate_rate': 2.0, 'filter_method': 'pape',
+                 'fixed_num': 70}
     else:
         raise NotImplementedError("This algorithm have not implement!")
     print('* Running experiment: ' + str(param))

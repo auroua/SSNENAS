@@ -60,13 +60,13 @@ parser.add_argument('--moco-dim', default=8, type=int,
 parser.add_argument('--cos', default=True, help='use cosine lr schedule')
 
 # nas parameters
-parser.add_argument('--search_space', default='nasbench_101',
-                    choices=['nasbench_101', 'nasbench_201'],
+parser.add_argument('--search_space', default='darts',
+                    choices=['nasbench_101', 'nasbench_201', 'darts'],
                     help='The nasbench benchmark.')
 # parser.add_argument('--input_dim', default=6, type=int,
 #                     help='input feature dimension. nasbench_101: 6, nasbench_201: 8')
 parser.add_argument('--save_dir',
-                    default='/home/albert_wei/Disk_A/train_output_ssne_nas/test/',
+                    default='/home/aurora/data_disk_new/train_output_2021/darts_save_path/',
                     help='The save dir of ckpt models.')
 
 # nasbench-101: batch-size: 4000,  train_samples: 1000,  margin: 2, min_negative_size: 3500
@@ -77,9 +77,9 @@ parser.add_argument('-b', '--batch-size', default=10000, type=int,
                     help='mini-batch size (default: 256), this is the total '
                          'batch size of all GPUs on the current node when '
                          'using Data Parallel or Distributed Data Parallel')
-parser.add_argument('--train_samples', default=5000, type=int,
+parser.add_argument('--train_samples', default=4000, type=int,
                     help='How many samples used to train this model.')
-parser.add_argument('--batch_step', default=1000, type=int,
+parser.add_argument('-bs', '--batch_step', default=500, type=int,
                     help='How many samples used to train this model.')
 parser.add_argument('--margin', default=0, type=int,
                     help='The margin between positive and negative pair.')
@@ -89,10 +89,14 @@ parser.add_argument('--center_regularization', default=True, type=bool,
                     help='The minimum number of negative samples.')
 parser.add_argument('--with_g_func', type=bool, default=False,
                     help='Using the g function after the backbone.')
-parser.add_argument('--gpu_count', type=int, default=0,
+parser.add_argument('--gpu_count', type=int, default=2,
                     help='Using the g function after the backbone.')
 parser.add_argument('--gpu_base', type=int, default=0,
                     help='Using the g function after the backbone.')
+parser.add_argument('--darts_arch_path', type=str,
+                    default='/home/aurora/data_disk_new/train_output_2021/darts_save_path/architectures/part3_partial.pkl',
+                    help='Using the g function after the backbone.')
+
 
 if __name__ == '__main__':
     # For multiple gpu training, you should modify the following parameters: set gpu to None,
@@ -104,6 +108,8 @@ if __name__ == '__main__':
         args.input_dim = 6
     elif args.search_space == 'nasbench_201':
         args.input_dim = 8
+    elif args.search_space == 'darts':
+        args.input_dim = 11
     else:
         raise NotImplementedError('Does support this search space at present!')
 

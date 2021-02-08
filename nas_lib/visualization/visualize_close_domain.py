@@ -291,7 +291,77 @@ def draw_plot_nasbench_201(root_path, model_lists, model_masks, draw_type='ERROR
     np_std_dict = getstd(np_datas_dict, model_lists=model_lists)
     np_mean_dict = getmean(np_datas_dict, model_lists=model_lists)
 
-    # for k, v in np_datas_dict.items():
+    np_quantile_30 = get_quantile(np_datas_dict, model_lists=model_lists, divider=30)
+    np_quantile_70 = get_quantile(np_datas_dict, model_lists=model_lists, divider=70)
+
+    if verbose:
+        for k, v in np_mean_dict.items():
+            print(k)
+            print('30 quantile value')
+            print(np_quantile_30[k])
+            print('mean')
+            print(v)
+            print('70 quantile value')
+            print(np_quantile_70[k])
+            print('std')
+            print(np_std_dict[k])
+            print('###############')
+    np_bounds = get_bounder(np_mean_dict, np_quantile_30, np_quantile_70, model_lists=model_lists, absolute=True)
+    # get data mean
+    idx = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    fig, ax = plt.subplots(1)
+    fig.set_size_inches(6, 5)
+
+    upperlimits = [True] * 10
+    lowerlimits = [True] * 10
+    if draw_type == 'ERRORBAR':
+        for j, m in enumerate(model_lists):
+            if model_masks[j]:
+                # plt.errorbar(idx, np_mean_dict[m], yerr=np_bounds[m], uplims=upperlimits, lolims=lowerlimits,
+                #              label=m, capthick=2)
+                plt.errorbar(idx, np_mean_dict[m], yerr=np_bounds[m], label=m, capsize=6, capthick=2, color=color_names_dict[j])
+    elif draw_type == 'MEANERROR':
+        for j, m in enumerate(model_lists):
+            if model_masks[j]:
+                plt.plot(idx, np_mean_dict[m], label=m, marker='s', linewidth=1, ms=3)     # fmt='o',
+    if args.dataname == 'cifar10-valid':
+        ax.set_yticks(np.arange(8.8, 10.9, 0.2))
+    elif args.dataname == 'cifar100':
+        ax.set_yticks(np.arange(26.5, 32.5, 0.5))
+    elif args.dataname == 'ImageNet16-120':
+        ax.set_yticks(np.arange(53.2, 58.2, 0.5))
+    else:
+        raise NotImplementedError()
+    # ax.grid(True)
+    fig.set_dpi(300.0)
+    ax.set_xlabel('number of samples')
+    ax.set_ylabel('testing error of best neural net')
+    # plt.legend(bbox_to_anchor=(1.05, 1), loc='upper right', borderaxespad=0.5)
+    plt.legend(loc='upper right')
+    # plt.grid(b=True, which='major', color='#666699', linestyle='--')
+    plt.show()
+
+
+def draw_plot_nasbench_201_merge(root_path, root_path_2, model_lists, model_lists2,
+                                 model_masks, model_masks2, draw_type='ERRORBAR', verbose=1, args=None):
+    # draw_type  ERRORBAR, MEANERROR
+    np_datas_dict = convert2np(root_path, end=None, model_lists=model_lists)
+    np_std_dict = getstd(np_datas_dict, model_lists=model_lists)
+    np_mean_dict = getmean(np_datas_dict, model_lists=model_lists)
+
+    np_datas_dict2 = convert2np(root_path_2, end=None, model_lists=model_lists2)
+    np_std_dict2 = getstd(np_datas_dict2, model_lists=model_lists2)
+    np_mean_dict2 = getmean(np_datas_dict2, model_lists=model_lists2)
+
+    for k, v in np_datas_dict2.items():
+        np_datas_dict[k] = v
+
+    for k, v in np_std_dict2.items():
+        np_std_dict[k] = v
+
+    for k, v in np_mean_dict2.items():
+        np_mean_dict[k] = v
+    # for k, v in np_d1atas_dict.items():
     #     data = v[:, -1]
     #     print(k)
     #     print(sorted(data.tolist()))
@@ -344,8 +414,74 @@ def draw_plot_nasbench_201(root_path, model_lists, model_masks, draw_type='ERROR
     ax.set_xlabel('number of samples')
     ax.set_ylabel('testing error of best neural net')
     # plt.legend(bbox_to_anchor=(1.05, 1), loc='upper right', borderaxespad=0.5)
-    plt.legend(loc='upper right')
+    # plt.legend(loc='upper right')
     # plt.grid(b=True, which='major', color='#666699', linestyle='--')
     plt.show()
 
 
+def draw_plot_nasbench_101_merge(root_path, root_path_2, model_lists, model_lists2,
+                                 model_masks, model_masks2, draw_type='ERRORBAR', verbose=1):
+    # draw_type  ERRORBAR, MEANERROR
+    np_datas_dict = convert2np(root_path, model_lists=model_lists, end=None)
+    # EA_reuslt = np_datas_dict['EA']
+    # print(EA_reuslt.shape)
+    # print(np.max(EA_reuslt, axis=0))
+    # print(np.min(EA_reuslt, axis=0))
+    np_mean_dict = getmean(np_datas_dict, model_lists=model_lists)
+    np_std_dict = getstd(np_datas_dict, model_lists=model_lists)
+
+    np_datas_dict2 = convert2np(root_path_2, end=None, model_lists=model_lists2)
+    np_std_dict2 = getstd(np_datas_dict2, model_lists=model_lists2)
+    np_mean_dict2 = getmean(np_datas_dict2, model_lists=model_lists2)
+
+    for k, v in np_datas_dict2.items():
+        np_datas_dict[k] = v
+
+    for k, v in np_std_dict2.items():
+        np_std_dict[k] = v
+
+    for k, v in np_mean_dict2.items():
+        np_mean_dict[k] = v
+
+
+    np_quantile_30 = get_quantile(np_datas_dict, model_lists=model_lists, divider=30)
+    np_quantile_70 = get_quantile(np_datas_dict, model_lists=model_lists, divider=70)
+
+    if verbose:
+        for k, v in np_mean_dict.items():
+            print(k)
+            print('30 quantile value')
+            print(np_quantile_30[k])
+            print('mean')
+            print(v)
+            print('70 quantile value')
+            print(np_quantile_70[k])
+            print('std')
+            print(np_std_dict[k])
+            print('###############')
+    np_bounds = get_bounder(np_mean_dict, np_quantile_30, np_quantile_70, model_lists=model_lists, absolute=True)
+    # get data mean
+    idx = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150])
+    fig, ax = plt.subplots(1)
+    fig.set_size_inches(6, 5)
+    upperlimits = [True] * 15
+    lowerlimits = [True] * 15
+    if draw_type == 'ERRORBAR':
+        for j, m in enumerate(model_lists):
+            if model_masks[j]:
+                # plt.errorbar(idx, np_mean_dict[m], yerr=np_bounds[m], uplims=upperlimits, lolims=lowerlimits,
+                #              label=m, capthick=2)
+                plt.errorbar(idx, np_mean_dict[m], yerr=np_bounds[m], label=m, capsize=3, capthick=2, color=color_names_dict[j])
+    elif draw_type == 'MEANERROR':
+        for j, m in enumerate(model_lists):
+            if model_masks[j]:
+                plt.plot(idx, np_mean_dict[m], label=m, marker='s', linewidth=1, ms=3)     # fmt='o',
+    # ax.set_yticks(np.arange(92.5, 94.4, 0.2))
+    ax.set_yticks(np.arange(5.8, 9.4, 0.2))
+    # ax.grid(True)
+    fig.set_dpi(300.0)
+    ax.set_xlabel('number of samples', fontsize=13)
+    ax.set_ylabel('testing error of best neural net', fontsize=13)
+    plt.legend(loc='upper right', fontsize=12)
+    # plt.grid(b=True, which='major', color='#666699', linestyle='--')
+    plt.show()

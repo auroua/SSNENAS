@@ -14,7 +14,7 @@ from nas_lib.predictor_retrain_compare.predictor_gin_ccl import PredictorGINCCL
 class NasBenchGinPredictorTrainer:
     def __init__(self, agent_type, lr=0.01, device=None, epochs=10, train_images=10, batch_size=10, rate=10,
                  input_dim=6, model_dir=None, predictor_type=None, logger=None, algo_name=None):
-        if 'ss' in algo_name:
+        if algo_name and 'ss' in algo_name:
             self.nas_agent = self._get_predictor(algo_name)(input_dim=input_dim, reTrain=True)
         else:
             self.nas_agent = PredictorGIN(input_dim=input_dim)
@@ -33,7 +33,7 @@ class NasBenchGinPredictorTrainer:
 
             elif 'ss_ccl' in algo_name:
                 self.nas_agent = load_predictor_ged_moco_v2(self.nas_agent, model_path)
-                self.lr *= 0.1
+                # self.lr *= 0.1
                 self.nas_agent.fc = torch.nn.Linear(32, 1, bias=True)
                 torch.nn.init.kaiming_uniform_(self.nas_agent.fc.weight, a=1)
                 self.nas_agent.fc.bias.data.zero_()

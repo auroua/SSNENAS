@@ -171,6 +171,7 @@ class Cell:
             path_encoding[index] = 1
         return path_encoding
 
+
     def path_distance(self, other):
         """
         compute the distance between two architectures

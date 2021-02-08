@@ -9,8 +9,8 @@ from collections import defaultdict
 import os
 import pickle
 from nas_lib.utils.comm import random_id, random_id_int, setup_logger
-from configs import nas_bench_101_all_data
-from configs import ss_rl_nasbench_101, ss_rl_nasbench_201, ss_ccl_nasbench_101, ss_ccl_nasbench_201
+from configs import nas_bench_101_all_data, ss_rl_nasbench_101, ss_rl_nasbench_201, ss_ccl_nasbench_101, ss_ccl_nasbench_201
+import math
 
 
 def predictor_retrain_compare(args, predictor, train_data, test_data, flag, load_dir=None, train_epochs=None,
@@ -28,7 +28,7 @@ def main(args):
     file_name = 'log_%s_%d' % ('gpus', args.gpu)
     logger = setup_logger(file_name, args.save_dir, args.gpu, log_level='DEBUG',
                           filename='%s.txt' % file_name)
-
+    logger.info(args)
     if args.search_space == 'nasbench_101':
         with open(nas_bench_101_all_data, 'rb') as fpkl:
             all_data = pickle.load(fpkl)
@@ -51,23 +51,32 @@ def main(args):
                 if args.compare_supervised == 'T':
                     logger.info(f'====  predictor type: SUPERVISED, load pretrain model False, '
                                 f'search budget is {budget}. Training epoch is {epochs} ====')
-                    spearman_corr, kendalltau_corr = predictor_retrain_compare(args, args.predictor_list[0],
-                                                                               train_data, test_data,
-                                                                               flag=False,
-                                                                               train_epochs=epochs,
-                                                                               logger=logger)
+                    spearman_corr, kendalltau_corr, duration = predictor_retrain_compare(args, 'SS_RL',
+                                                                                         train_data, test_data,
+                                                                                         flag=False,
+                                                                                         train_epochs=epochs,
+                                                                                         logger=logger)
+                    if math.isnan(spearman_corr):
+                        spearman_corr = 0
+                    if math.isnan(kendalltau_corr):
+                        kendalltau_corr = 0
                     s_results_dict[f'supervised#{budget}#{epochs}'].append(spearman_corr)
                     k_results_dict[f'supervised#{budget}#{epochs}'].append(kendalltau_corr)
                 for predictor_type, dir in zip(args.predictor_list, args.load_dir):
                     logger.info(f'====  predictor type: {predictor_type}, load pretrain model True. '
                                 f'Search budget is {budget}. Training epoch is {epochs}. '
                                 f'The model save dir is {dir.split("/")[-1][:-3]}  ====')
-                    spearman_corr, kendalltau_corr = predictor_retrain_compare(args, predictor_type,
-                                                                               train_data, test_data,
-                                                                               flag=True,
-                                                                               load_dir=dir,
-                                                                               train_epochs=epochs,
-                                                                               logger=logger)
+                    logger.info(dir)
+                    spearman_corr, kendalltau_corr, duration = predictor_retrain_compare(args, predictor_type,
+                                                                                         train_data, test_data,
+                                                                                         flag=True,
+                                                                                         load_dir=dir,
+                                                                                         train_epochs=epochs,
+                                                                                         logger=logger)
+                    if math.isnan(spearman_corr):
+                        spearman_corr = 0
+                    if math.isnan(kendalltau_corr):
+                        kendalltau_corr = 0
                     s_results_dict[predictor_type + '#' + str(budget) + '#' + str(epochs)].append(spearman_corr)
                     k_results_dict[predictor_type + '#' + str(budget) + '#' + str(epochs)].append(kendalltau_corr)
         file_id = random_id(6)
@@ -82,9 +91,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Predictor comparison parameters!')
     # ['supervised', 'SS_RL', 'SS_CCL']
     parser.add_argument('--compare_supervised', type=str, default='T')
-    parser.add_argument('--predictor_list', default=['SS_RL',
-                                                     'SS_CCL',
-                                                     ],
+    parser.add_argument('--predictor_list', default=[
+        'SS_RL',
+        'SS_CCL',
+    ],
                         nargs='+',
                         help='The analysis architecture dataset type!')
     parser.add_argument('--search_space', type=str, default='nasbench_101',
@@ -98,18 +108,19 @@ if __name__ == '__main__':
                         choices=['cifar10-valid', 'cifar10', 'cifar100', 'ImageNet16-120'],
                         help='The evaluation of dataset of NASBench-201.')
     parser.add_argument('--search_budget', type=list,
-                        default=[20, 50, 100, 150, 200],
+                        # default=[20, 50, 100, 150, 200],
+                        default=[20],
                         help='How many architectures are selected to train the neural predictor.')
     parser.add_argument('--train_iterations', type=list,
-                        default=[50, 100, 150, 200, 250, 300],
+                        # default=[50, 100, 150, 200, 250, 300],
+                        default=[50, 100],
                         help='How many training iterations are used to train the model.')
     parser.add_argument('--gpu', type=int, default=0, help='Choose which gpu to train the neural network.')
     parser.add_argument('--load_dir',  nargs='+',
-                        # for nasbench_101
                         default=[],
                         help='The pre-trained unsupervised model save path.')
     parser.add_argument('--save_dir', type=str,
-                        default='/home/albert_wei/Disk_A/train_output_ssne_nas/test/',
+                        default='/home/aurora/data_disk_new/train_output_2021/darts_save_path/',
                         help='The pre-trained unsupervised model save path.')
     args = parser.parse_args()
 

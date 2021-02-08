@@ -18,6 +18,16 @@ def gen_batch_idx(idx_list, batch_size, drop_last=False):
     return idx_batch_list
 
 
+def gen_batch_idx_gen(idx_list, batch_size, drop_last=False):
+    ds_len = len(idx_list)
+
+    for i in range(0, math.ceil(ds_len/batch_size)):
+        if (i+1)*batch_size > ds_len and not drop_last:
+            yield idx_list[i*batch_size:]
+        else:
+            yield idx_list[i*batch_size: (i+1)*batch_size]
+
+
 def make_agent_optimizer(model, base_lr, weight_deacy=1e-4, bias_multiply=True):
     params = []
     for key, value in model.named_parameters():

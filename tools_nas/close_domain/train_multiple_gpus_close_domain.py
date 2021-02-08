@@ -146,15 +146,15 @@ if __name__ == "__main__":
     parser.add_argument('--dataname', type=str, default='cifar100',
                         choices=['cifar10-valid', 'cifar10', 'cifar100', 'ImageNet16-120'],
                         help='The evaluation of dataset of NASBench-201.')
-    parser.add_argument('--algo_params', type=str, default='nasbench_101',
+    parser.add_argument('--algo_params', type=str, default='nasbench_101_fixed',
                         choices=['nasbench_101', 'nasbench_201', 'nasbench_101_fixed', 'nasbench_201_fixed'],
                         help='which algorithms to compare')
     parser.add_argument('--output_filename', type=str, default=random_id(64), help='name of output files')
-    parser.add_argument('--gpus', type=int, default=1, help='The num of gpus used for search.')
+    parser.add_argument('--gpus', type=int, default=2, help='The num of gpus used for search.')
     parser.add_argument('--loss_type', type=str, default="mae", help='Loss used to train architecture.')
     parser.add_argument('--with_details', type=str, default="F", help='Record detailed training procedure.')
     parser.add_argument('--save_dir', type=str,
-                        default='/home/albert_wei/Disk_A/train_output_2020/testtest/',
+                        default='/home/aurora/data_disk_new/train_output_2021/predictor_performance_comparision/npenas_nasbench_101_ss_ccl_batch_size_compare/',
                         help='output directory')
     args = parser.parse_args()
 
