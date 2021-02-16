@@ -108,19 +108,17 @@ if __name__ == '__main__':
                         choices=['cifar10-valid', 'cifar10', 'cifar100', 'ImageNet16-120'],
                         help='The evaluation of dataset of NASBench-201.')
     parser.add_argument('--search_budget', type=list,
-                        # default=[20, 50, 100, 150, 200],
-                        default=[20],
+                        default=[20, 50, 100, 150, 200],
                         help='How many architectures are selected to train the neural predictor.')
     parser.add_argument('--train_iterations', type=list,
-                        # default=[50, 100, 150, 200, 250, 300],
-                        default=[50, 100],
+                        default=[50, 100, 150, 200, 250, 300],
                         help='How many training iterations are used to train the model.')
     parser.add_argument('--gpu', type=int, default=0, help='Choose which gpu to train the neural network.')
     parser.add_argument('--load_dir',  nargs='+',
                         default=[],
                         help='The pre-trained unsupervised model save path.')
     parser.add_argument('--save_dir', type=str,
-                        default='/home/aurora/data_disk_new/train_output_2021/darts_save_path/',
+                        default='/home/albert_wei/Disk_A/train_output_2021/predictor_fine_tune_results_2/',
                         help='The pre-trained unsupervised model save path.')
     args = parser.parse_args()
 

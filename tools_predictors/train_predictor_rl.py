@@ -47,11 +47,11 @@ if __name__ == '__main__':
     #  unsupervised_ged: SS_RL
     parser.add_argument('--predictor_list', type=list, default=['SS_RL'],
                         help='The analysis architecture dataset type!')
-    parser.add_argument('--seed', type=int, default=333, help='The seed value.')
+    parser.add_argument('--seed', type=int, default=3344, help='The seed value.')
     parser.add_argument('--search_space', type=str, default='nasbench_101',
-                        choices=['nasbench_101', 'nasbench_201'],
+                        choices=['nasbench_101', 'nasbench_201', 'darts'],
                         help='The search space.')
-    parser.add_argument('--epochs', type=int, default=1000, help='The architecture training epochs.')
+    parser.add_argument('--epochs', type=int, default=300, help='The architecture training epochs.')
     parser.add_argument('--dataname', type=str, default='cifar10-valid',
                         choices=['cifar10-valid', 'cifar10', 'cifar100', 'ImageNet16-120'],
                         help='The evaluation of dataset of NASBench-201.')
@@ -61,9 +61,9 @@ if __name__ == '__main__':
     parser.add_argument('--darts_training_nums', type=int,
                         default=None,
                         help='The evaluation of dataset of NASBench-201.')
-    parser.add_argument('--gpu', type=int, default=1, help='Choose which gpu to train the neural network.')
+    parser.add_argument('--gpu', type=int, default=0, help='Choose which gpu to train the neural network.')
     parser.add_argument('--save_dir', type=str,
-                        default='/home/aurora/data_disk_new/train_output_2021/darts_save_path/',
+                        default='/home/albert_wei/Disk_A/train_output_2021/SS_RL_NASBENCH_101_300_5/',
                         help='The pre-trained unsupervised model save path.')
     parser.add_argument('--save_model', type=bool,
                         default=True,
