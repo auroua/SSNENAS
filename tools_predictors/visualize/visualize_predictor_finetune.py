@@ -154,8 +154,7 @@ def cm2inch(*tupl):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Predictor comparison parameters!')
     parser.add_argument('--result_path', type=str,
-                        # default='/home/aurora/Desktop/ssnenas_revise_results/predictor_compare_results/predictor_finetune_comapre_nasbench_101/',
-                        default='/home/aurora/Desktop/ssnenas_revise_results/predictor_compare_results/predictor_finetune_comapre_nasbench_201/',
+                        default='/home/albert_wei/Disk_A/train_output_2021/predictor_fine_tune_results_2/',
                         help='The analysis architecture dataset type!')
     args = parser.parse_args()
 
