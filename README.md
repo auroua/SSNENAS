@@ -206,8 +206,8 @@ python tools_darts/test_darts_cifar10.py --model_name e678ee620e52436f6e2f36d039
 
 **Visualize the searched normal cell and the reduction cell, and this architecture achieves a testing error `2.41%`.**
 
-![normal_cell](./images/normal_darts.png)
-![reduction_cell](./images/reduction_darts.png)
+![normal_cell](images/normal_darts.png?raw=true)
+![reduction_cell](images/reduction_darts.png?raw=true)
 
 You can download the best architecture's genotype file from [genotype](https://pan.baidu.com/s/1dfgE97Iajqy3LGd-rSLgHw) with extract code `2h3y`. The address of the retrained weight file is [pth](https://pan.baidu.com/s/1Z2O71eu9V3i6rEVxgjoEJA) with extract code `wxpc`.
 You can use the command in the section `Test the retrained architecture` to verify the model.
