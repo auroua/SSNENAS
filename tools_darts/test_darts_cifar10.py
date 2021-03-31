@@ -40,7 +40,7 @@ def infer(valid_queue, model, criterion, device):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Searched model for cifar10')
-    parser.add_argument('--model_name', type=str, default='a7de5453f3bdb45e2b12b11d0a3027941b064ad5f83e61758750c97b766010e0.pkl',
+    parser.add_argument('--model_name', type=str, default='e678ee620e52436f6e2f36d0396c1f9baf994a78e64242d629aad927b0eb0057.pkl',
                         help='name of output files')
     parser.add_argument('--gpu', type=int, default=0, help='gpu device id')
     parser.add_argument('--init_channels', type=int, default=36, help='num of init channels')
@@ -51,9 +51,9 @@ if __name__ == "__main__":
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--arch', type=str, default='DARTS', help='which architecture to use')
     parser.add_argument('--save_dir', type=str,
-                        default='/home/aurora/data_disk_new/train_output_2021/darts_save_path/',
+                        default='/home/albert_wei/Desktop/CIM-Revise-R2/ssnenas_darts_results_new/models/',
                         help='name of save directory')
-    parser.add_argument('--model_path', type=str, default='/home/aurora/Desktop/ssnenas_revise_results/darts_search_results/model_best.pth.tar',
+    parser.add_argument('--model_path', type=str, default='/home/albert_wei/Desktop/CIM-Revise-R2/ssnenas_darts_results_new/seed_1/model_best.pth.tar',
                         help='path of pretrained model')
     seed = 111444
     args = parser.parse_args()
